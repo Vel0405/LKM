@@ -10,20 +10,19 @@ static struct task_struct *ts;
 int check_battery(void)
 {
     // Create variables
-    	struct file *f,*g,*h;
+    	struct file *f,*g;
     	char buf[128];
-	int bval=10,i,b1val=0;
+	int bval=10,i;
     	mm_segment_t fs;
-	ssize_t rk=0,rk1=0;
+	ssize_t rk=0;
 	size_t len = sizeof(bval);
-	size_t len1=sizeof(b1val);
     // Init the buffer with 0
     	for(i=0;i<128;i++)
 	{
 		buf[i] = 0;
 	}
     // To see in /var/log/messages that the module is operating
-    	printk(KERN_INFO "Monitoring Battery power...\n");
+    	printk(KERN_INFO"Monitoring Battery percentage...\n");
 
 	f = filp_open("/sys/class/power_supply/BAT1/capacity", O_RDONLY, 0);
     	if(f == NULL)
@@ -43,16 +42,13 @@ int check_battery(void)
 			return -1;
 		}
 		printk(KERN_INFO "battery% is %d",buf1);
-		char bright[20], bluet[10]; /* should be large enough */
+		char bright[20]; /* should be large enough */
 		if(buf1<=98)
 		{
 			g=filp_open("/sys/class/backlight/nvidia_0/brightness",O_RDWR,0);
     			len = scnprintf(bright, sizeof(bright), "%d\n", bval);
     			rk = kernel_write(g,bright,len,&g->f_pos);
-			h=filp_open("/sys/class/bluetooth/hci0/rfkill0/state",O_RDWR,0);
-			len1 = scnprintf(bluet, sizeof(bluet), "%d\n", b1val);
-			rk1 = kernel_write(h,bluet,len1,&h->f_pos);
-	 		printk(KERN_ALERT "battery is low");
+	 		printk(KERN_ALERT "battery is low ");
 		}
     }
     filp_close(f,NULL);
