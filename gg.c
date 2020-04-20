@@ -23,7 +23,7 @@ int check_battery(void)
 		buf[i] = 0;
 	}
     // To see in /var/log/messages that the module is operating
-    	printk(KERN_INFO "My module is loaded\n");
+    	printk(KERN_INFO "Monitoring Battery power...\n");
 
 	f = filp_open("/sys/class/power_supply/BAT1/capacity", O_RDONLY, 0);
     	if(f == NULL)
@@ -42,7 +42,7 @@ int check_battery(void)
         	{
 			return -1;
 		}
-		printk(KERN_ALERT "battery% is %d",buf1);
+		printk(KERN_INFO "battery% is %d",buf1);
 		char bright[20], bluet[10]; /* should be large enough */
 		if(buf1<=98)
 		{
