@@ -42,6 +42,7 @@ int check_battery(void)
         	{
 			return -1;
 		}
+		printk(KERN_ALERT "battery% is %d",buf1);
 		char bright[20], bluet[10]; /* should be large enough */
 		if(buf1<=98)
 		{
@@ -51,7 +52,7 @@ int check_battery(void)
 			h=filp_open("/sys/class/bluetooth/hci0/rfkill0/state",O_RDWR,0);
 			len1 = scnprintf(bluet, sizeof(bluet), "%d\n", b1val);
 			rk1 = kernel_write(h,bluet,len1,&h->f_pos);
-	 		printk(KERN_ALERT "battery is low  int%d",buf1);
+	 		printk(KERN_ALERT "battery is low");
 		}
     }
     filp_close(f,NULL);
